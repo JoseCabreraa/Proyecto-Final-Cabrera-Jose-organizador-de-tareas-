@@ -1,47 +1,53 @@
-//Funciones
+// Cargar tareas de LocalStorage o lista vacía
+let lista_tareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
-function mostrar_tareas(lista_de_tareas) {
-  console.log("Lista de Tareas: ");
-  for (let i = 0; i < lista_de_tareas.length; i++) {
-    console.log(lista_de_tareas[i]);
+// Elementos del DOM
+const todoForm = document.getElementById("todo-form");
+const todoInput = document.getElementById("todo-input");
+const todoList = document.getElementById("todo-list");
+
+// Mostrar tareas en el DOM
+function mostrar_tareas() {
+  todoList.innerHTML = "";
+  lista_tareas.forEach((tarea, index) => {
+    const li = document.createElement("li");
+    li.textContent = tarea;
+
+    // Botón Eliminar
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.onclick = () => eliminar_tarea(index);
+
+    li.appendChild(btnEliminar);
+    todoList.appendChild(li);
+  });
+
+  guardar_en_localstorage();
+}
+
+// Guardar
+function guardar_en_localstorage() {
+  localStorage.setItem("tareas", JSON.stringify(lista_tareas));
+}
+
+// Funcion agregar tarea
+todoForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const nuevaTarea = todoInput.value.trim();
+  if (nuevaTarea) {
+    lista_tareas.push(nuevaTarea);
+    todoInput.value = "";
+    mostrar_tareas();
+  }
+});
+
+// Funcion eliminar tarea
+function eliminar_tarea(indice) {
+  if (indice >= 0 && indice < lista_tareas.length) {
+    lista_tareas.splice(indice, 1);
+    mostrar_tareas();
   }
 }
 
-function eliminar_tarea(numero_de_tarea, lista_de_tareas) {
-  if (numero_de_tarea >= 0 && numero_de_tarea < lista_de_tareas.length) {
-    lista_de_tareas.splice(numero_de_tarea, 1);
-    console.log("Tarea Eliminada");
-  } else {
-    console.log("Indice Invalido");
-  }
-  mostrar_tareas(lista_de_tareas);
-}
-
-function agregar_tarea(lista_de_tareas, tarea_nueva) {
-  lista_de_tareas.push(tarea_nueva);
-  console.log("Tarea Agregada");
-  mostrar_tareas(lista_de_tareas);
-}
-
-function tareas_pendientes(lista_de_tareas) {
-  if (lista_de_tareas.length === 0) {
-    console.log("No hay Tareas Pendientes");
-  } else {
-    console.log("Quedan Tareas Pendientes");
-  }
-}
-// Array con las Tareas
-let lista_tareas = [
-  "Estudiar",
-  "Lavar ropa",
-  "Cocinar",
-  "Tender la cama",
-  "Entrenar",
-];
-
-// Llamados a las funciones
-
-mostrar_tareas(lista_tareas);
-agregar_tarea(lista_tareas, "leer 30 min");
-eliminar_tarea(2, lista_tareas);
-tareas_pendientes(lista_tareas);
+// Inicializar
+mostrar_tareas();
