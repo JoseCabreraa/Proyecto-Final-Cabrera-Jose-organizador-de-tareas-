@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Tareas</title>
+    <title>To do List</title>
     <link rel="stylesheet" href="./css/style.css" />
     <script defer src="./js/main.js"></script>
   </head>
@@ -18,6 +18,11 @@
         />
         <button type="submit">Agregar</button>
       </form>
+      <div class="filtros">
+        <button data-filtro="todos">Todos</button>
+        <button data-filtro="pendientes">Pendientes</button>
+        <button data-filtro="completadas">Completadas</button>
+      </div>
       <ul id="todo-list"></ul>
     </div>
   </body>

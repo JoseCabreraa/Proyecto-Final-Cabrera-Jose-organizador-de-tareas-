@@ -70,3 +70,32 @@ button:hover {
 #todo-list button:hover {
   background: #c0392b;
 }
+
+.completada {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.filtros {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filtros button {
+  background: #ddd;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filtros button:hover {
+  background: #ccc;
+}
+
+.filtros button.activo {
+  background: #4caf50;
+  color: white;
+}
