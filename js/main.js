@@ -41,17 +41,17 @@ function mostrar() {
   lista.innerHTML = filtradas
     .map(function (t, i) {
       return `
-      <li>
-        <input type="checkbox" ${
-          t.completada ? "checked" : ""
-        } onchange="toggleCompletada(${i})">
-        <span class="${t.completada ? "completada" : ""}">
-          <strong>${t.titulo}</strong> - ${t.descripcion} [${t.prioridad}]
-        </span>
-        <button onclick="editar(${i})">Editar</button>
-        <button onclick="eliminar(${i})">Eliminar</button>
-      </li>
-    `;
+    <li>
+      <input type="checkbox" ${
+        t.completada ? "checked" : ""
+      } onchange="toggleCompletada(${i})">
+      <span class="${t.completada ? "completada" : ""}">
+        <strong>${t.titulo}</strong> - ${t.descripcion} [${t.prioridad}]
+      </span>
+      <button class="editar" onclick="editar(${i})">Editar</button>
+      <button class="eliminar" onclick="eliminar(${i})">Eliminar</button>
+    </li>
+  `;
     })
     .join("");
 
