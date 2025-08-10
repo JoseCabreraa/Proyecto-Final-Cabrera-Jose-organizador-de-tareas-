@@ -1,47 +1,54 @@
 body {
   font-family: Arial, sans-serif;
-  background: #f7f7f7;
-  display: flex;
-  justify-content: center;
-  padding-top: 50px;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 0;
 }
 
-.todo-container {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
-}
-
-h1 {
+header {
+  background: #0077cc;
+  color: white;
+  padding: 1rem;
   text-align: center;
 }
 
-#todo-form {
+form {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
 }
 
-#todo-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+form input,
+form select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
 }
 
-button {
-  padding: 10px 20px;
+form button {
+  background: #0077cc;
+  color: white;
   border: none;
-  background: #4caf50;
-  color: #fff;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
-button:hover {
-  background: #45a049;
+.filtros {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem;
+}
+
+.filtros button {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.filtros .activo {
+  background: #0077cc;
+  color: white;
 }
 
 #todo-list {
@@ -50,52 +57,30 @@ button:hover {
 }
 
 #todo-list li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  background: white;
+  margin: 0.5rem;
+  padding: 0.5rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-
-#todo-list li:last-child {
-  border-bottom: none;
-}
-
-#todo-list button {
-  background: #e74c3c;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
-
-#todo-list button:hover {
-  background: #c0392b;
+  gap: 1rem;
+  border: 1px solid #ddd;
 }
 
 .completada {
   text-decoration: line-through;
-  color: #888;
+  color: gray;
 }
 
-.filtros {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.filtros button {
-  background: #ddd;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.filtros button:hover {
-  background: #ccc;
-}
-
-.filtros button.activo {
-  background: #4caf50;
+button.editar {
+  background: orange;
   color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+}
+
+button.eliminar {
+  background: red;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
 }

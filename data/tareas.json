@@ -1,0 +1,4 @@
+[
+  { "titulo": "Estudiar JavaScript", "descripcion": "Repasar DOM y eventos", "prioridad": "Alta", "completada": false },
+  { "titulo": "Hacer ejercicio", "descripcion": "Cardio 30 minutos", "prioridad": "Media", "completada": false }
+]
