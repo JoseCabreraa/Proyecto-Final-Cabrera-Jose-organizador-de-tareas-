@@ -1,147 +1,83 @@
-//variables y constantes principales
 let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-let filtro = "todos";
-let editando = null;
+let filtroActual = "todos"; // valores que pueded tomar: "todos", "pendientes" , "completadas"
+let indiceEditando = null; // índice de tarea que se está editando
 
-const form = document.getElementById("todo-form");
-const titulo = document.getElementById("todo-titulo");
-const descripcion = document.getElementById("todo-descripcion");
-const prioridad = document.getElementById("todo-prioridad");
-const lista = document.getElementById("todo-list");
-const botones = document.querySelectorAll(".filtros button");
+// Manejo de almacenamiento
 
-// Cargo las tareas desde el JSON si no hay en localStorage
-function cargarTareas() {
+export function guardarTareas() {
+  localStorage.setItem("tareas", JSON.stringify(tareas));
+}
+
+export function cargarTareasDesdeJSON(callback) {
+  if (tareas.length > 0) {
+    callback();
+    return;
+  }
+
   fetch("data/tareas.json")
-    .then(function (res) {
-      if (!res.ok) throw new Error("No se pudo cargar");
-      return res.json();
+    .then((respuesta) => {
+      if (!respuesta.ok) throw new Error("No se pudo cargar el archivo JSON");
+      return respuesta.json();
     })
-    .then(function (data) {
-      if (tareas.length === 0) {
-        tareas = data;
-        guardar();
-      }
-      mostrar();
+    .then((data) => {
+      tareas = data;
+      guardarTareas();
+      callback();
     })
-    .catch(function (err) {
-      console.error(err);
+    .catch((error) => {
+      console.error(error);
       Swal.fire("Error", "No se pudieron cargar las tareas", "error");
     });
 }
 
-// Mostrar tareas en el HTML según filtro
-function mostrar() {
-  const filtradas = tareas.filter(function (t) {
-    if (filtro === "pendientes") return !t.completada;
-    if (filtro === "completadas") return t.completada;
+// Funciones para las tareas
+export function obtenerTareasFiltradas() {
+  return tareas.filter((tarea) => {
+    if (filtroActual === "pendientes") return !tarea.completada;
+    if (filtroActual === "completadas") return tarea.completada;
     return true;
   });
-
-  lista.innerHTML = filtradas
-    .map(function (t, i) {
-      return `
-    <li>
-      <input type="checkbox" ${
-        t.completada ? "checked" : ""
-      } onchange="toggleCompletada(${i})">
-      <span class="${t.completada ? "completada" : ""}">
-        <strong>${t.titulo}</strong> - ${t.descripcion} [${t.prioridad}]
-      </span>
-      <button class="editar" onclick="editar(${i})">Editar</button>
-      <button class="eliminar" onclick="eliminar(${i})">Eliminar</button>
-    </li>
-  `;
-    })
-    .join("");
-
-  actualizarBotones();
-  guardar();
 }
 
-// Guardar tareas
-function guardar() {
-  localStorage.setItem("tareas", JSON.stringify(tareas));
+export function agregarTarea(titulo, descripcion, prioridad) {
+  const nuevaTarea = { titulo, descripcion, prioridad, completada: false };
+  tareas.push(nuevaTarea);
+  guardarTareas();
 }
 
-// Agregar o editar tarea al enviar el formulario
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  if (!titulo.value.trim() || !descripcion.value.trim()) {
-    Swal.fire("Atención", "Completa todos los campos", "warning");
-    return;
-  }
-
-  if (editando !== null) {
-    tareas[editando].titulo = titulo.value.trim();
-    tareas[editando].descripcion = descripcion.value.trim();
-    tareas[editando].prioridad = prioridad.value;
-    editando = null;
-    Swal.fire("Listo", "Tarea editada", "success");
-  } else {
-    tareas.push({
-      titulo: titulo.value.trim(),
-      descripcion: descripcion.value.trim(),
-      prioridad: prioridad.value,
-      completada: false,
-    });
-    Swal.fire("Bien", "Tarea agregada", "success");
-  }
-
-  form.reset();
-  mostrar();
-});
-
-// Cambiar estado de la tarea a completada/no completada
-function toggleCompletada(i) {
-  tareas[i].completada = !tareas[i].completada;
-  mostrar();
+export function editarTarea(indice, titulo, descripcion, prioridad) {
+  tareas[indice] = { ...tareas[indice], titulo, descripcion, prioridad };
+  guardarTareas();
 }
 
-// Editar tarea: carga datos al formulario
-function editar(i) {
-  titulo.value = tareas[i].titulo;
-  descripcion.value = tareas[i].descripcion;
-  prioridad.value = tareas[i].prioridad;
-  editando = i;
+export function eliminarTarea(indice) {
+  tareas.splice(indice, 1);
+  guardarTareas();
 }
 
-// Eliminar tarea con confirmación con una animacion fachera
-function eliminar(i) {
-  Swal.fire({
-    title: "¿Eliminar esta tarea?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Sí",
-    cancelButtonText: "No",
-  }).then(function (resultado) {
-    if (resultado.isConfirmed) {
-      tareas.splice(i, 1);
-      mostrar();
-      Swal.fire("Eliminada", "Tarea eliminada", "success");
-    }
-  });
+export function toggleCompletada(indice) {
+  tareas[indice].completada = !tareas[indice].completada;
+  guardarTareas();
 }
 
-// Cambiar filtro al hacer click
-botones.forEach(function (btn) {
-  btn.addEventListener("click", function () {
-    filtro = btn.dataset.filtro;
-    mostrar();
-  });
-});
+// Leer o modificar Tareas
 
-// Actualizar estilos de botones
-function actualizarBotones() {
-  botones.forEach(function (btn) {
-    if (btn.dataset.filtro === filtro) {
-      btn.classList.add("activo");
-    } else {
-      btn.classList.remove("activo");
-    }
-  });
+export function setFiltro(nuevoFiltro) {
+  filtroActual = nuevoFiltro;
 }
 
-// inicializar la carga de tareas
-cargarTareas();
+export function getFiltro() {
+  return filtroActual;
+}
+
+export function setEditando(indice) {
+  indiceEditando = indice;
+}
+
+export function getEditando() {
+  return indiceEditando;
+}
+
+export function resetEditando() {
+  indiceEditando = null;
+}

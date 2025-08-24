@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dejando la procastinación</title>
     <link rel="stylesheet" href="./css/style.css" />
-    <script defer src="./js/main.js"></script>
+    <!--<script defer src="./js/main.js"></script>
+    <script defer src="./js/ui.js"></script>-->
+    <script type="module" src="js/ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
@@ -13,7 +15,10 @@
       <h1>Gestor de Tareas</h1>
     </header>
 
-    <main>
+    <main class="container">
+      <h1>Gestor de Tareas</h1>
+
+      <!-- Formulario -->
       <form id="todo-form">
         <input type="text" id="todo-titulo" placeholder="Título" required />
         <input
@@ -23,19 +28,21 @@
           required
         />
         <select id="todo-prioridad">
-          <option value="Alta">Alta</option>
-          <option value="Media">Media</option>
-          <option value="Baja">Baja</option>
+          <option value="alta">Alta</option>
+          <option value="media">Media</option>
+          <option value="baja">Baja</option>
         </select>
-        <button type="submit">Agregar Tarea</button>
+        <button type="submit">Guardar</button>
       </form>
 
+      <!-- Filtros -->
       <div class="filtros">
         <button data-filtro="todos" class="activo">Todos</button>
         <button data-filtro="pendientes">Pendientes</button>
         <button data-filtro="completadas">Completadas</button>
       </div>
 
+      <!-- Lista -->
       <ul id="todo-list"></ul>
     </main>
 
